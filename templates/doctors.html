@@ -1,0 +1,533 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .doctor-page {
+        padding: 10px 0 40px;
+    }
+
+    .doctor-hero {
+        background: linear-gradient(135deg, #1677ff, #45aaf2);
+        color: white;
+        padding: 28px 30px;
+        border-radius: 18px;
+        margin-bottom: 25px;
+    }
+
+    .doctor-hero h2 {
+        margin: 0 0 6px;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .doctor-hero p {
+        margin: 0;
+        font-size: 15px;
+        opacity: 0.95;
+    }
+
+    .add-doctor-box {
+        background: white;
+        padding: 25px;
+        border-radius: 18px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+        margin-bottom: 30px;
+    }
+
+    .add-doctor-box h3 {
+        margin: 0 0 20px;
+        font-size: 20px;
+        color: #1f2937;
+    }
+
+    .doctor-form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 7px;
+        color: #374151;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 9px;
+        font-size: 14px;
+        background: white;
+        color: #374151;
+        outline: none;
+    }
+
+    .form-group select {
+        cursor: pointer;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        border-color: #1683d8;
+        box-shadow: 0 0 0 3px rgba(22, 131, 216, 0.12);
+    }
+
+    .add-button-area {
+        grid-column: 1 / -1;
+    }
+
+    .add-doctor-btn {
+        border: none;
+        background: #078bd0;
+        color: white;
+        padding: 11px 22px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .add-doctor-btn:hover {
+        background: #067bb8;
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0 0 18px;
+    }
+
+    .doctors-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .doctor-card {
+        background: white;
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    .doctor-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .doctor-top {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 18px;
+    }
+
+    .doctor-icon {
+        width: 65px;
+        height: 65px;
+        min-width: 65px;
+        border-radius: 50%;
+        background: #e8f3ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+    }
+
+    .doctor-name {
+        font-size: 19px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 5px;
+    }
+
+    .doctor-specialization {
+        color: #078bd0;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .doctor-details {
+        border-top: 1px solid #edf0f3;
+        padding-top: 15px;
+        margin-bottom: 18px;
+    }
+
+    .doctor-detail {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 8px;
+    }
+
+    .doctor-detail:last-child {
+        margin-bottom: 0;
+    }
+
+    .doctor-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        text-align: center;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        box-sizing: border-box;
+    }
+
+    .edit-btn {
+        background: #078bd0;
+        color: white;
+    }
+
+    .edit-btn:hover {
+        background: #067bb8;
+        color: white;
+    }
+
+    .delete-btn {
+        background: #fff1f1;
+        color: #dc3545;
+        border: 1px solid #ffd1d1;
+    }
+
+    .delete-btn:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .empty-doctors {
+        background: white;
+        border-radius: 18px;
+        padding: 50px 20px;
+        text-align: center;
+        color: #6b7280;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .empty-doctors-icon {
+        font-size: 45px;
+        margin-bottom: 10px;
+    }
+
+    .empty-doctors h3 {
+        margin-bottom: 5px;
+        color: #374151;
+    }
+
+    @media (max-width: 1000px) {
+
+        .doctors-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .doctor-form {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+    @media (max-width: 650px) {
+
+        .doctor-hero {
+            padding: 22px;
+        }
+
+        .doctor-hero h2 {
+            font-size: 23px;
+        }
+
+        .doctor-form {
+            grid-template-columns: 1fr;
+        }
+
+        .add-button-area {
+            grid-column: auto;
+        }
+
+        .doctors-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .doctor-card {
+            padding: 20px;
+        }
+
+    }
+</style>
+
+
+<div class="doctor-page">
+
+    <div class="doctor-hero">
+
+        <h2>Doctor Management</h2>
+
+        <p>
+            Add, edit and manage doctors in MediCare Hospital
+        </p>
+
+    </div>
+
+
+    {% if session.role in ['admin', 'doctor'] %}
+
+    <div class="add-doctor-box">
+
+        <h3>
+            Add New Doctor
+        </h3>
+
+        <form
+            method="POST"
+            action="{{ url_for('doctors') }}"
+        >
+
+            <div class="doctor-form">
+
+                <div class="form-group">
+
+                    <label>
+                        Doctor Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter doctor name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Specialization
+                    </label>
+
+                    <select
+                        name="specialization"
+                        required
+                    >
+
+                        <option value="">
+                            Select Specialization
+                        </option>
+
+                        <option value="Cardiologist">
+                            Cardiologist
+                        </option>
+
+                        <option value="Dermatologist">
+                            Dermatologist
+                        </option>
+
+                        <option value="Neurologist">
+                            Neurologist
+                        </option>
+
+                        <option value="Orthopedic">
+                            Orthopedic
+                        </option>
+
+                        <option value="Pediatrician">
+                            Pediatrician
+                        </option>
+
+                        <option value="Psychiatrist">
+                            Psychiatrist
+                        </option>
+
+                        <option value="General Physician">
+                            General Physician
+                        </option>
+
+                        <option value="Gynecologist">
+                            Gynecologist
+                        </option>
+
+                        <option value="ENT Specialist">
+                            ENT Specialist
+                        </option>
+
+                        <option value="Dentist">
+                            Dentist
+                        </option>
+
+                        <option value="Ophthalmologist">
+                            Ophthalmologist
+                        </option>
+
+                        <option value="Surgeon">
+                            Surgeon
+                        </option>
+
+                        <option value="Urologist">
+                            Urologist
+                        </option>
+
+                        <option value="Radiologist">
+                            Radiologist
+                        </option>
+
+                        <option value="Oncologist">
+                            Oncologist
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="text"
+                        name="phone"
+                        placeholder="Enter phone number"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="add-button-area">
+
+                    <button
+                        type="submit"
+                        class="add-doctor-btn"
+                    >
+                        + Add Doctor
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    {% endif %}
+
+
+    <h3 class="section-title">
+        Available Doctors
+    </h3>
+
+
+    {% if doctors %}
+
+    <div class="doctors-grid">
+
+        {% for doctor in doctors %}
+
+        <div class="doctor-card">
+
+            <div class="doctor-top">
+
+                <div class="doctor-icon">
+                    👨‍⚕️
+                </div>
+
+                <div>
+
+                    <div class="doctor-name">
+                        Dr. {{ doctor.name }}
+                    </div>
+
+                    <div class="doctor-specialization">
+                        {{ doctor.specialization }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="doctor-details">
+
+                <div class="doctor-detail">
+                    📞 {{ doctor.phone }}
+                </div>
+
+            </div>
+
+
+            {% if session.role in ['admin', 'doctor'] %}
+
+            <div class="doctor-actions">
+
+                <a
+                    href="{{ url_for('edit_doctor', doctor_id=doctor.id) }}"
+                    class="edit-btn"
+                >
+                    Edit
+                </a>
+
+
+                <a
+                    href="{{ url_for('delete_doctor', doctor_id=doctor.id) }}"
+                    class="delete-btn"
+                    onclick="return confirm('Are you sure you want to delete this doctor?')"
+                >
+                    Delete
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-doctors">
+
+        <div class="empty-doctors-icon">
+            👨‍⚕️
+        </div>
+
+        <h3>
+            No Doctors Available
+        </h3>
+
+        <p>
+            Add a doctor using the form above.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

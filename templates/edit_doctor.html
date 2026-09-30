@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .edit-container {
+        max-width: 700px;
+        margin: 40px auto;
+    }
+
+    .edit-card {
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    }
+
+    .edit-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .doctor-avatar {
+        width: 80px;
+        height: 80px;
+        background: #e7f1ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 38px;
+        margin: 0 auto 15px;
+    }
+</style>
+
+<div class="edit-container">
+
+    <div class="edit-card">
+
+        <div class="edit-header">
+
+            <div class="doctor-avatar">
+                👨‍⚕️
+            </div>
+
+            <h2>Edit Doctor</h2>
+
+            <p class="text-muted">
+                Update doctor information
+            </p>
+
+        </div>
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Doctor Name
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    value="{{ doctor.name }}"
+                    required
+                >
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Specialization
+                </label>
+
+                <input
+                    type="text"
+                    name="specialization"
+                    class="form-control"
+                    value="{{ doctor.specialization }}"
+                    required
+                >
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">
+                    Phone Number
+                </label>
+
+                <input
+                    type="text"
+                    name="phone"
+                    class="form-control"
+                    value="{{ doctor.phone }}"
+                    required
+                >
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary flex-grow-1"
+                >
+                    Save Changes
+                </button>
+
+                <a
+                    href="{{ url_for('doctors') }}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

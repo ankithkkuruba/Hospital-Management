@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="login-icon">
+            <i class="fa-solid fa-user-lock"></i>
+        </div>
+
+        <h2>Welcome Back</h2>
+
+        <p>Login to your hospital account</p>
+
+
+        <form method="POST">
+
+            <label>Username</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-user"></i>
+
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Enter username"
+                    required
+                >
+
+            </div>
+
+
+            <label>Password</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit" class="btn full">
+                Login
+            </button>
+
+        </form>
+
+
+        <div class="demo-login">
+
+    <h4>Demo Login</h4>
+
+    <p>
+        Admin:
+        <b>admin / admin123</b>
+    </p>
+
+    <p>
+        Doctor:
+        <b>doctor / doctor123</b>
+    </p>
+
+    <p>
+        Patient:
+        <b>patient / patient123</b>
+    </p>
+
+    <small>
+        Additional accounts can be created by the administrator.
+    </small>
+
+</div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+<div style="text-align:center; margin-top:20px;">
+
+    <span>Don't have a patient account?</span>
+
+    <a
+        href="{{ url_for('register') }}"
+        style="color:#078bd0; font-weight:600; text-decoration:none;"
+    >
+        Register as Patient
+    </a>
+
+</div>

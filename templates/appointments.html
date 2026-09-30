@@ -1,0 +1,756 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.appointments-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-hero {
+    background: linear-gradient(135deg, #1677ff, #0ea5e9);
+    color: white;
+    padding: 32px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(22,119,255,0.15);
+}
+
+.page-hero h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.page-hero p {
+    opacity: 0.9;
+    font-size: 15px;
+}
+
+
+/* TOP SUMMARY */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.summary-card {
+    background: white;
+    padding: 22px;
+    border-radius: 17px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.summary-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 13px;
+    background: #eaf3ff;
+    color: #1677ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+}
+
+.summary-card h2 {
+    font-size: 25px;
+    margin-bottom: 3px;
+}
+
+.summary-card p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+/* APPOINTMENTS CARD */
+
+.appointments-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.06);
+}
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.card-heading h2 {
+    color: #1e293b;
+    font-size: 22px;
+}
+
+.new-appointment-btn {
+    background: #1677ff;
+    color: white;
+    text-decoration: none;
+    padding: 11px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.new-appointment-btn:hover {
+    background: #0f65d8;
+}
+
+
+/* TABLE */
+
+.appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.appointment-table th {
+    text-align: left;
+    background: #f8fafc;
+    color: #475569;
+    padding: 15px;
+    font-size: 13px;
+    font-weight: 700;
+    border-bottom: 1px solid #e5eaf2;
+}
+
+.appointment-table td {
+    padding: 16px 15px;
+    border-bottom: 1px solid #eef2f7;
+    color: #334155;
+    font-size: 14px;
+}
+
+.appointment-table tr:last-child td {
+    border-bottom: none;
+}
+
+.appointment-table tr:hover td {
+    background: #fafcff;
+}
+
+
+/* PATIENT */
+
+.patient-name {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.doctor-name {
+    font-weight: 600;
+    color: #1677ff;
+}
+
+
+/* DATE */
+
+.date-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date-box i {
+    color: #64748b;
+}
+
+.time-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.time-box i {
+    color: #64748b;
+}
+
+
+/* STATUS */
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-pending {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.status-approved {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.status-rejected {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.status-completed {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+
+/* ACTION BUTTONS */
+
+.actions {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    text-decoration: none;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.approve-btn {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.reject-btn {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.complete-btn {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+
+/* EMPTY */
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-state-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: #eaf3ff;
+    color: #1677ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.empty-state h3 {
+    color: #1e293b;
+    margin-bottom: 7px;
+}
+
+.empty-state p {
+    color: #64748b;
+    margin-bottom: 18px;
+}
+
+
+/* REASON */
+
+.reason {
+    max-width: 180px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .appointments-card {
+        overflow-x: auto;
+    }
+
+    .appointment-table {
+        min-width: 850px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .page-hero {
+        padding: 25px;
+    }
+
+    .page-hero h1 {
+        font-size: 25px;
+    }
+
+    .card-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+}
+
+</style>
+
+
+<div class="appointments-page">
+
+
+    <!-- HERO -->
+
+    <div class="page-hero">
+
+        <h1>
+            <i class="fa-solid fa-calendar-check"></i>
+
+            {% if session.get("role") == "patient" %}
+                My Appointments
+            {% else %}
+                Appointment Management
+            {% endif %}
+
+        </h1>
+
+        <p>
+
+            {% if session.get("role") == "patient" %}
+                View and track your hospital appointments.
+            {% else %}
+                Manage patient appointments and update their status.
+            {% endif %}
+
+        </p>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary-grid">
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="fa-solid fa-calendar"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    {{ appointments|length }}
+                </h2>
+
+                <p>
+                    {% if session.get("role") == "patient" %}
+                        My Appointments
+                    {% else %}
+                        Total Appointments
+                    {% endif %}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <div>
+
+                <h2>
+
+                    {{ appointments|selectattr("status", "equalto", "Pending")|list|length }}
+
+                </h2>
+
+                <p>
+                    Pending
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <div>
+
+                <h2>
+
+                    {{ appointments|selectattr("status", "equalto", "Approved")|list|length }}
+
+                </h2>
+
+                <p>
+                    Approved
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- APPOINTMENT LIST -->
+
+    <div class="appointments-card">
+
+
+        <div class="card-heading">
+
+            <div>
+
+                <h2>
+                    <i class="fa-solid fa-list-check"></i>
+                    Appointment List
+                </h2>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('appointment') }}"
+                class="new-appointment-btn"
+            >
+
+                <i class="fa-solid fa-plus"></i>
+
+                Book Appointment
+
+            </a>
+
+        </div>
+
+
+        {% if appointments %}
+
+
+        <table class="appointment-table">
+
+            <thead>
+
+                <tr>
+
+                    {% if session.get("role") != "patient" %}
+                    <th>Patient</th>
+                    {% endif %}
+
+                    <th>Doctor</th>
+
+                    <th>Date</th>
+
+                    <th>Time</th>
+
+                    <th>Reason</th>
+
+                    <th>Status</th>
+
+                    {% if session.get("role") in ["admin", "doctor"] %}
+                    <th>Actions</th>
+                    {% endif %}
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for appointment in appointments %}
+
+                <tr>
+
+
+                    {% if session.get("role") != "patient" %}
+
+                    <td>
+
+                        <div class="patient-name">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            {{ appointment.patient }}
+
+                        </div>
+
+                    </td>
+
+                    {% endif %}
+
+
+                    <td>
+
+                        <div class="doctor-name">
+
+                            <i class="fa-solid fa-user-doctor"></i>
+
+                            {{ appointment.doctor }}
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="date-box">
+
+                            <i class="fa-solid fa-calendar-day"></i>
+
+                            {{ appointment.date }}
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="time-box">
+
+                            <i class="fa-solid fa-clock"></i>
+
+                            {{ appointment.time }}
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="reason">
+
+                            {% if appointment.reason %}
+
+                                {{ appointment.reason }}
+
+                            {% else %}
+
+                                No reason provided
+
+                            {% endif %}
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+
+                        {% if appointment.status == "Pending" %}
+
+                        <span class="status status-pending">
+
+                            <i class="fa-solid fa-clock"></i>
+
+                            Pending
+
+                        </span>
+
+
+                        {% elif appointment.status == "Approved" %}
+
+                        <span class="status status-approved">
+
+                            <i class="fa-solid fa-check"></i>
+
+                            Approved
+
+                        </span>
+
+
+                        {% elif appointment.status == "Rejected" %}
+
+                        <span class="status status-rejected">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                            Rejected
+
+                        </span>
+
+
+                        {% elif appointment.status == "Completed" %}
+
+                        <span class="status status-completed">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Completed
+
+                        </span>
+
+
+                        {% endif %}
+
+
+                    </td>
+
+
+                    {% if session.get("role") in ["admin", "doctor"] %}
+
+                    <td>
+
+                        <div class="actions">
+
+
+                            {% if appointment.status == "Pending" %}
+
+                            <a
+                                href="{{ url_for(
+                                    'update_appointment_status',
+                                    appointment_id=appointment.id,
+                                    status='Approved'
+                                ) }}"
+                                class="action-btn approve-btn"
+                            >
+
+                                <i class="fa-solid fa-check"></i>
+
+                                Approve
+
+                            </a>
+
+
+                            <a
+                                href="{{ url_for(
+                                    'update_appointment_status',
+                                    appointment_id=appointment.id,
+                                    status='Rejected'
+                                ) }}"
+                                class="action-btn reject-btn"
+                            >
+
+                                <i class="fa-solid fa-xmark"></i>
+
+                                Reject
+
+                            </a>
+
+
+                            {% elif appointment.status == "Approved" %}
+
+                            <a
+                                href="{{ url_for(
+                                    'update_appointment_status',
+                                    appointment_id=appointment.id,
+                                    status='Completed'
+                                ) }}"
+                                class="action-btn complete-btn"
+                            >
+
+                                <i class="fa-solid fa-check-double"></i>
+
+                                Complete
+
+                            </a>
+
+
+                            {% else %}
+
+                            <span style="color:#94a3b8;font-size:12px;">
+                                No actions
+                            </span>
+
+                            {% endif %}
+
+
+                        </div>
+
+                    </td>
+
+                    {% endif %}
+
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        {% else %}
+
+
+        <div class="empty-state">
+
+            <div class="empty-state-icon">
+
+                <i class="fa-solid fa-calendar-xmark"></i>
+
+            </div>
+
+            <h3>
+                No appointments found
+            </h3>
+
+            <p>
+                You don't have any appointments yet.
+            </p>
+
+            <a
+                href="{{ url_for('appointment') }}"
+                class="new-appointment-btn"
+            >
+
+                <i class="fa-solid fa-calendar-plus"></i>
+
+                Book Your First Appointment
+
+            </a>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}

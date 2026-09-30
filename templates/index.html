@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-icon">
+            <i class="fa-solid fa-hospital"></i>
+        </div>
+
+        <h1>Hospital Management System</h1>
+
+        <p>
+            Manage patients, doctors and appointments
+            in one simple system.
+        </p>
+
+        {% if session.get("username") %}
+
+            <a href="{{ url_for('dashboard') }}" class="btn">
+                Go to Dashboard
+            </a>
+
+        {% else %}
+
+            <a href="{{ url_for('login') }}" class="btn">
+                Get Started
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<section class="features">
+
+    <div class="feature-card">
+
+        <i class="fa-solid fa-user-doctor"></i>
+
+        <h3>Doctor Management</h3>
+
+        <p>
+            Doctors can manage patient information
+            and appointments.
+        </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+        <i class="fa-solid fa-user"></i>
+
+        <h3>Patient Portal</h3>
+
+        <p>
+            Patients can book appointments
+            quickly and easily.
+        </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+        <i class="fa-solid fa-calendar-check"></i>
+
+        <h3>Appointments</h3>
+
+        <p>
+            Keep track of upcoming
+            hospital appointments.
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,657 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.dashboard-page {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.welcome-box {
+    background: linear-gradient(135deg, #1677ff, #0ea5e9);
+    color: white;
+    padding: 32px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(22,119,255,0.18);
+}
+
+.welcome-box h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.welcome-box p {
+    opacity: 0.9;
+    font-size: 15px;
+}
+
+.patient-info {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.patient-badge {
+    background: rgba(255,255,255,0.15);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.section-title {
+    margin: 30px 0 15px;
+    font-size: 22px;
+    color: #1e293b;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.stat-box {
+    background: white;
+    padding: 23px;
+    border-radius: 17px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 17px;
+}
+
+.stat-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    background: #eaf3ff;
+    color: #1677ff;
+}
+
+.stat-box h2 {
+    font-size: 25px;
+    margin-bottom: 3px;
+}
+
+.stat-box p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.action-card {
+    background: white;
+    padding: 25px;
+    border-radius: 17px;
+    text-decoration: none;
+    color: #1e293b;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.06);
+    transition: 0.25s;
+}
+
+.action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+.action-card i {
+    font-size: 28px;
+    color: #1677ff;
+    margin-bottom: 15px;
+}
+
+.action-card h3 {
+    margin-bottom: 6px;
+}
+
+.action-card p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.doctor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.doctor-box {
+    background: white;
+    padding: 20px;
+    border-radius: 17px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.doctor-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.doctor-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #eaf3ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.doctor-box h3 {
+    margin-bottom: 5px;
+}
+
+.doctor-specialization {
+    color: #1677ff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.doctor-phone {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.book-btn {
+    background: #1677ff;
+    color: white;
+    text-decoration: none;
+    padding: 9px 13px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.appointment-table {
+    background: white;
+    border-radius: 17px;
+    overflow: hidden;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.06);
+}
+
+.appointment-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    padding: 17px 20px;
+    border-bottom: 1px solid #eef2f7;
+    align-items: center;
+}
+
+.appointment-row:last-child {
+    border-bottom: none;
+}
+
+.appointment-header {
+    background: #f8fafc;
+    font-weight: 700;
+    color: #475569;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-pending {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.status-approved {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.status-rejected {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.status-completed {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.empty-box {
+    background: white;
+    padding: 35px;
+    text-align: center;
+    border-radius: 17px;
+    color: #64748b;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 800px) {
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .doctor-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .appointment-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .appointment-header {
+        display: none;
+    }
+
+}
+
+</style>
+
+
+<div class="dashboard-page">
+
+    <div class="welcome-box">
+
+        <h1>
+            Welcome back, {{ session.get("name") }} 👋
+        </h1>
+
+        <p>
+            Manage your healthcare appointments and stay connected
+            with our medical team.
+        </p>
+
+        <div class="patient-info">
+
+            <div class="patient-badge">
+                <i class="fa-solid fa-user"></i>
+                {{ session.get("role")|capitalize }} Account
+            </div>
+
+            <div class="patient-badge">
+                <i class="fa-solid fa-shield-heart"></i>
+                MediCare Hospital
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% if session.get("role") == "patient" %}
+
+    <h2 class="section-title">
+        Your Overview
+    </h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-box">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+
+            <div>
+                <h2>{{ doctors|length }}</h2>
+                <p>Available Doctors</p>
+            </div>
+
+        </div>
+
+
+        <div class="stat-box">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+
+            <div>
+                <h2>{{ appointments|length }}</h2>
+                <p>Your Appointments</p>
+            </div>
+
+        </div>
+
+
+        <div class="stat-box">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+
+            <div>
+                <h2>24/7</h2>
+                <p>Medical Support</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">
+        Quick Actions
+    </h2>
+
+    <div class="action-grid">
+
+        <a
+            href="{{ url_for('appointment') }}"
+            class="action-card"
+        >
+
+            <i class="fa-solid fa-calendar-plus"></i>
+
+            <h3>Book Appointment</h3>
+
+            <p>
+                Schedule an appointment with a doctor.
+            </p>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('appointments') }}"
+            class="action-card"
+        >
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+            <h3>My Appointments</h3>
+
+            <p>
+                View your appointment status and details.
+            </p>
+
+        </a>
+
+    </div>
+
+
+    <h2 class="section-title">
+        Available Doctors
+    </h2>
+
+    <div class="doctor-grid">
+
+        {% for doctor in doctors %}
+
+        <div class="doctor-box">
+
+            <div class="doctor-left">
+
+                <div class="doctor-avatar">
+                    👨‍⚕️
+                </div>
+
+                <div>
+
+                    <h3>
+                        {{ doctor.name }}
+                    </h3>
+
+                    <div class="doctor-specialization">
+                        {{ doctor.specialization }}
+                    </div>
+
+                    <div class="doctor-phone">
+                        📞 {{ doctor.phone }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <a
+                href="{{ url_for('appointment') }}"
+                class="book-btn"
+            >
+                Book
+            </a>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-box">
+            No doctors are currently available.
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <h2 class="section-title">
+        Recent Appointments
+    </h2>
+
+    {% if appointments %}
+
+    <div class="appointment-table">
+
+        <div class="appointment-row appointment-header">
+
+            <div>Doctor</div>
+            <div>Date</div>
+            <div>Time</div>
+            <div>Status</div>
+
+        </div>
+
+
+        {% for appointment in appointments[:5] %}
+
+        <div class="appointment-row">
+
+            <div>
+                <strong>
+                    {{ appointment.doctor }}
+                </strong>
+            </div>
+
+            <div>
+                {{ appointment.date }}
+            </div>
+
+            <div>
+                {{ appointment.time }}
+            </div>
+
+            <div>
+
+                {% if appointment.status == "Pending" %}
+
+                <span class="status status-pending">
+                    Pending
+                </span>
+
+                {% elif appointment.status == "Approved" %}
+
+                <span class="status status-approved">
+                    Approved
+                </span>
+
+                {% elif appointment.status == "Rejected" %}
+
+                <span class="status status-rejected">
+                    Rejected
+                </span>
+
+                {% else %}
+
+                <span class="status status-completed">
+                    Completed
+                </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-box">
+
+        <i class="fa-solid fa-calendar-xmark"
+           style="font-size:35px;margin-bottom:12px;">
+        </i>
+
+        <h3>No appointments yet</h3>
+
+        <p>
+            Book your first appointment with one of our doctors.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    {% else %}
+
+    <!-- ==========================================
+         ADMIN / DOCTOR DASHBOARD
+         ========================================== -->
+
+    <h2 class="section-title">
+        Hospital Overview
+    </h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-box">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <div>
+                <h2>{{ patients|length }}</h2>
+                <p>Total Patients</p>
+            </div>
+
+        </div>
+
+
+        <div class="stat-box">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+
+            <div>
+                <h2>{{ doctors|length }}</h2>
+                <p>Total Doctors</p>
+            </div>
+
+        </div>
+
+
+        <div class="stat-box">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+
+            <div>
+                <h2>{{ appointments|length }}</h2>
+                <p>Total Appointments</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">
+        Management
+    </h2>
+
+    <div class="action-grid">
+
+        <a
+            href="{{ url_for('patients') }}"
+            class="action-card"
+        >
+
+            <i class="fa-solid fa-users"></i>
+
+            <h3>Manage Patients</h3>
+
+            <p>
+                Add, edit and delete patient information.
+            </p>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('doctors') }}"
+            class="action-card"
+        >
+
+            <i class="fa-solid fa-user-doctor"></i>
+
+            <h3>Manage Doctors</h3>
+
+            <p>
+                Add, edit and delete doctor information.
+            </p>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('appointments') }}"
+            class="action-card"
+        >
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            <h3>Manage Appointments</h3>
+
+            <p>
+                Approve, reject and complete appointments.
+            </p>
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

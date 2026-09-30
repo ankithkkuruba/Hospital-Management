@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-card large">
+
+        <h1>
+            <i class="fa-solid fa-user-pen"></i>
+            Edit Patient
+        </h1>
+
+        <p>Update patient information.</p>
+
+
+        <form method="POST">
+
+            <label>Patient Name</label>
+
+            <input
+                type="text"
+                name="name"
+                value="{{ patient.name }}"
+                required
+            >
+
+
+            <label>Age</label>
+
+            <input
+                type="number"
+                name="age"
+                value="{{ patient.age }}"
+                required
+            >
+
+
+            <label>Gender</label>
+
+            <select name="gender" required>
+
+                <option value="Male"
+                    {% if patient.gender == "Male" %}selected{% endif %}>
+                    Male
+                </option>
+
+                <option value="Female"
+                    {% if patient.gender == "Female" %}selected{% endif %}>
+                    Female
+                </option>
+
+                <option value="Other"
+                    {% if patient.gender == "Other" %}selected{% endif %}>
+                    Other
+                </option>
+
+            </select>
+
+
+            <label>Phone</label>
+
+            <input
+                type="text"
+                name="phone"
+                value="{{ patient.phone }}"
+                required
+            >
+
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                name="email"
+                value="{{ patient.email }}"
+                required
+            >
+
+
+            <div class="form-buttons">
+
+                <button type="submit" class="btn">
+                    <i class="fa-solid fa-save"></i>
+                    Save Changes
+                </button>
+
+
+                <a
+                    href="{{ url_for('patients') }}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

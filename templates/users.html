@@ -1,0 +1,459 @@
+    {% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.users-page {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.users-hero {
+    background: linear-gradient(135deg, #1677ff, #0ea5e9);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
+.users-hero h1 {
+    margin-bottom: 7px;
+}
+
+.users-hero p {
+    opacity: .9;
+}
+
+.users-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 22px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 6px 25px rgba(0,0,0,.06);
+}
+
+.card h2 {
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dbe3ef;
+    border-radius: 10px;
+    background: #f8fafc;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #1677ff;
+}
+
+.create-btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: #1677ff;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.user-list {
+    display: grid;
+    gap: 12px;
+}
+
+.user-card {
+    border: 1px solid #e5eaf2;
+    border-radius: 14px;
+    padding: 17px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #eaf3ff;
+    color: #1677ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.user-name {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.username {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.role {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.role-admin {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.role-doctor {
+    background: #eaf3ff;
+    color: #1677ff;
+}
+
+.role-patient {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.delete-btn {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 8px 11px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.empty {
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+}
+
+@media(max-width:850px) {
+
+    .users-layout {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .user-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+
+<div class="users-page">
+
+
+    <div class="users-hero">
+
+        <h1>
+            <i class="fa-solid fa-users-gear"></i>
+            User Management
+        </h1>
+
+        <p>
+            Create and manage hospital user accounts.
+        </p>
+
+    </div>
+
+
+    <div class="users-layout">
+
+
+        <!-- CREATE USER -->
+
+        <div class="card">
+
+            <h2>
+                Create Account
+            </h2>
+
+            <p class="subtitle">
+                Add a new Admin, Doctor or Patient account.
+            </p>
+
+
+            <form method="POST">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter username"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Account Type
+                    </label>
+
+                    <select name="role" required>
+
+                        <option value="">
+                            Select account type
+                        </option>
+
+                        <option value="admin">
+                            Admin
+                        </option>
+
+                        <option value="doctor">
+                            Doctor
+                        </option>
+
+                        <option value="patient">
+                            Patient
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="create-btn"
+                >
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Create Account
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+        <!-- USER LIST -->
+
+        <div class="card">
+
+            <h2>
+                Registered Accounts
+            </h2>
+
+            <p class="subtitle">
+                All user accounts in the system.
+            </p>
+
+
+            <div class="user-list">
+
+
+                {% for user in users %}
+
+                <div class="user-card">
+
+
+                    <div class="user-left">
+
+                        <div class="user-avatar">
+
+                            {% if user.role == "admin" %}
+
+                                <i class="fa-solid fa-user-shield"></i>
+
+                            {% elif user.role == "doctor" %}
+
+                                <i class="fa-solid fa-user-doctor"></i>
+
+                            {% else %}
+
+                                <i class="fa-solid fa-user"></i>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="user-name">
+                                {{ user.name }}
+                            </div>
+
+                            <div class="username">
+                                @{{ user.username }}
+                            </div>
+
+
+                            {% if user.role == "admin" %}
+
+                            <span class="role role-admin">
+                                ADMIN
+                            </span>
+
+                            {% elif user.role == "doctor" %}
+
+                            <span class="role role-doctor">
+                                DOCTOR
+                            </span>
+
+                            {% else %}
+
+                            <span class="role role-patient">
+                                PATIENT
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    {% if user.id != session.get("user_id") %}
+
+                    <a
+                        href="{{ url_for(
+                            'delete_user',
+                            user_id=user.id
+                        ) }}"
+                        class="delete-btn"
+                        onclick="return confirm('Are you sure you want to delete this account?')"
+                    >
+
+                        <i class="fa-solid fa-trash"></i>
+
+                        Delete
+
+                    </a>
+
+                    {% else %}
+
+                    <span
+                        style="
+                        color:#94a3b8;
+                        font-size:12px;
+                        "
+                    >
+                        Current account
+                    </span>
+
+                    {% endif %}
+
+
+                </div>
+
+                {% else %}
+
+                <div class="empty">
+
+                    <i
+                        class="fa-solid fa-users"
+                        style="font-size:40px;"
+                    ></i>
+
+                    <h3>
+                        No accounts found
+                    </h3>
+
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
